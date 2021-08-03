@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Document
+@Document(collection = "note")
 public class Note {
 
   @Id
