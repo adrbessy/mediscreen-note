@@ -4,6 +4,7 @@ import com.mediscreen.exceptions.NonexistentException;
 import com.mediscreen.model.Note;
 import com.mediscreen.service.NoteService;
 import java.util.List;
+import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class NoteRestController {
    */
   @CrossOrigin
   @PostMapping("/note")
-  public boolean createNote(@RequestBody Note note) {
+  public boolean createNote(@Valid @RequestBody Note note) {
     logger.info("Post request with the endpoint 'note'");
     noteService.saveNote(note);
     logger.info(
