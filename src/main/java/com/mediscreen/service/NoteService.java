@@ -13,4 +13,6 @@ public interface NoteService {
 
   void updateNote(String id, Note note);
 
+  Note deleteNote(String id);
+
 }

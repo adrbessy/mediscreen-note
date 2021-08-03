@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -82,6 +83,19 @@ public class NoteServiceImpl implements NoteService {
     noteRepository.save(noteToUpdate.get());
   }
 
-
+  /**
+   * Delete a note
+   * 
+   * @param note A note
+   * @return the deleted note
+   */
+  @Override
+  @Transactional
+  public Note deleteNote(String id) {
+    logger.debug("in the method deleteNote in the class NoteServiceImpl");
+    Optional<Note> note = noteRepository.findById(id);
+    noteRepository.deleteById(id);
+    return note.get();
+  }
 
 }

@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,6 +80,31 @@ public class NoteRestController {
       throw new NonexistentException("The note with the id " + id + " doesn't exist.");
     }
     return true;
+  }
+
+  /**
+   * Delete - Delete a note
+   * 
+   * @param id An id
+   * @return - The deleted note
+   */
+  @DeleteMapping("/note")
+  public Note deleteNote(@RequestParam String id) {
+    Note note = null;
+    boolean existingNote = false;
+    logger.info("Delete request with the endpoint 'note'");
+    existingNote = noteService.noteExist(id);
+    if (existingNote) {
+      note = noteService.deleteNote(id);
+      logger.info(
+          "response following the DELETE on the endpoint 'note'.");
+    }
+    if (!existingNote) {
+      logger.error("The note with the id " + id + " doesn't exist.");
+      throw new NonexistentException(
+          "The note with the id " + id + " doesn't exist.");
+    }
+    return note;
   }
 
 }
