@@ -1,5 +1,6 @@
 package com.mediscreen.controllers;
 
+import com.mediscreen.exceptions.NonexistentException;
 import com.mediscreen.model.Note;
 import com.mediscreen.service.NoteService;
 import java.util.List;
@@ -8,7 +9,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +54,31 @@ public class NoteRestController {
     logger.info(
         "response following the GET on the endpoint 'notes'.");
     return noteList;
+  }
+
+  /**
+   * Update an existing note from a given id
+   * 
+   * @param id   An id
+   * @param note A note object with modifications
+   * @return The updated note object
+   */
+  @CrossOrigin
+  @PutMapping("/note/{id}")
+  public boolean updateNote(@PathVariable("id") final String id,
+      @RequestBody Note note) {
+    boolean existingNoteId = false;
+    logger.info(
+        "Put request of the endpoint 'note' with the id : {" + id + "}");
+    existingNoteId = noteService.noteExist(id);
+    if (existingNoteId) {
+      noteService.updateNote(id, note);
+    }
+    if (!existingNoteId) {
+      logger.error("The note with the id " + id + " doesn't exist.");
+      throw new NonexistentException("The note with the id " + id + " doesn't exist.");
+    }
+    return true;
   }
 
 }
