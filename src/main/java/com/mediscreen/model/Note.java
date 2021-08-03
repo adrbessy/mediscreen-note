@@ -1,6 +1,6 @@
 package com.mediscreen.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class Note {
 
   private int patientId;
 
-  private LocalDate date;
+  private Date date;
 
   private String note;
 
