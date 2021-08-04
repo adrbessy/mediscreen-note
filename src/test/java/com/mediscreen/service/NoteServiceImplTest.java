@@ -2,6 +2,7 @@ package com.mediscreen.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import com.mediscreen.model.Note;
 import com.mediscreen.proxies.MicroservicePatientProxy;
@@ -93,6 +94,19 @@ public class NoteServiceImplTest {
 
     noteService.updateNote(note.get().getId(), note2);
     assertThat(note.get().getNote()).isEqualTo(note2.getNote());
+  }
+
+  @Test
+  public void testDeleteNote() {
+    Optional<Note> note = Optional.ofNullable(new Note());
+    note.get().setPatientId(1);
+    note.get().setNote("Plant diet is necessary!");
+
+    when(noteRepositoryMock.findById(note.get().getId())).thenReturn(note);
+    doNothing().when(noteRepositoryMock).deleteById(note.get().getId());
+
+    Note result = noteService.deleteNote(note.get().getId());
+    assertThat(result).isEqualTo(note.get());
   }
 
 }
