@@ -15,4 +15,20 @@ public interface NoteService {
 
   Note deleteNote(String id);
 
+  /**
+   * Check if the patient id exists
+   * 
+   * @param patientId patient id
+   * @return true if it exists
+   */
+  boolean doesPatientExist(Integer patientId);
+
+  /**
+   * Check if a note is empty or null
+   * 
+   * @param note The content of a note
+   * @return true if the note is not null or empty
+   */
+  boolean filledNote(String note);
+
 }

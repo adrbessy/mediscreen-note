@@ -1,8 +1,8 @@
 package com.mediscreen.model;
 
 import java.util.Date;
-import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
@@ -15,14 +15,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Document(collection = "note")
-@Entity
 public class Note {
 
   @Id
   private String id;
 
-  @NotBlank(message = "PatientId is mandatory")
-  private int patientId;
+  @NotNull(message = "must not be null")
+  private Integer patientId;
 
   private Date date;
 

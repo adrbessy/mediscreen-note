@@ -4,7 +4,6 @@ import com.mediscreen.exceptions.NonexistentException;
 import com.mediscreen.model.Note;
 import com.mediscreen.service.NoteService;
 import java.util.List;
-import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,8 @@ public class NoteRestController {
   @Autowired
   private NoteService noteService;
 
+
+
   /**
    * Add a new note
    * 
@@ -34,8 +35,10 @@ public class NoteRestController {
    */
   @CrossOrigin
   @PostMapping("/note")
-  public boolean createNote(@Valid @RequestBody Note note) {
+  public boolean createNote(@RequestBody Note note) {
     logger.info("Post request with the endpoint 'note'");
+    noteService.doesPatientExist(note.getPatientId());
+    noteService.filledNote(note.getNote());
     noteService.saveNote(note);
     logger.info(
         "response following the Post on the endpoint 'note' with the given note : {"
@@ -52,6 +55,7 @@ public class NoteRestController {
   @GetMapping("/notes")
   public List<Note> getNotes(@RequestParam int patientId) {
     logger.info("Get request with the endpoint 'notes'");
+    noteService.doesPatientExist(patientId);
     List<Note> noteList = noteService.getNotes(patientId);
     logger.info(
         "response following the GET on the endpoint 'notes'.");
@@ -80,6 +84,8 @@ public class NoteRestController {
       logger.error("The note with the id " + id + " doesn't exist.");
       throw new NonexistentException("The note with the id " + id + " doesn't exist.");
     }
+    logger.info(
+        "response following the PUT on the endpoint 'note'.");
     return true;
   }
 

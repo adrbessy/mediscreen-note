@@ -1,6 +1,8 @@
 package com.mediscreen.service;
 
+import com.mediscreen.exceptions.IsForbiddenException;
 import com.mediscreen.model.Note;
+import com.mediscreen.proxies.MicroservicePatientProxy;
 import com.mediscreen.repositories.NoteRepository;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,22 @@ public class NoteServiceImpl implements NoteService {
 
   @Autowired
   private NoteRepository noteRepository;
+
+  @Autowired
+  private MicroservicePatientProxy microservicePatientProxy;
+
+  /**
+   * Check if the patient id exists
+   * 
+   * @param patientId patient id
+   * @return true if it exists
+   */
+  @Override
+  public boolean doesPatientExist(Integer patientId) {
+    logger.debug("in the method doesPatientExist in the class NoteServiceImpl");
+    boolean patientExists = microservicePatientProxy.doesPatientExist(patientId);
+    return patientExists;
+  }
 
   /**
    * Save a note
@@ -64,6 +82,23 @@ public class NoteServiceImpl implements NoteService {
   }
 
   /**
+   * Check if a note variable is empty or null
+   * 
+   * @param note The content of a note
+   * @return true if the note is not null or empty
+   */
+  @Override
+  public boolean filledNote(String note) {
+    logger.debug("in the method filledNote in the class NoteServiceImpl");
+    if (note == null || note.length() == 0) {
+      logger.error("The note content is empty or null.");
+      throw new IsForbiddenException("The note content is empty or null.");
+    } else {
+      return true;
+    }
+  }
+
+  /**
    * Update a note
    * 
    * @param id   The id of the note to update
@@ -72,11 +107,10 @@ public class NoteServiceImpl implements NoteService {
   @Override
   public void updateNote(String id, Note note) {
     logger.debug("in the method updateNote in the class NoteServiceImpl");
-    // Note noteBis = null;
+    boolean filledNote = filledNote(note.getNote());
     Optional<Note> noteToUpdate = noteRepository.findById(id);
-    if (note.getNote() != null) {
+    if (filledNote) {
       if (noteToUpdate.isPresent()) {
-        // noteBis = noteToUpdate.get();
         noteToUpdate.get().setNote(note.getNote());
       }
     }
