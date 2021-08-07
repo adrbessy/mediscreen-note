@@ -52,6 +52,7 @@ public class NoteRestController {
    * @param patientId The id of a patient
    * @return - A List of notes
    */
+  @CrossOrigin
   @GetMapping("/notes")
   public List<Note> getNotes(@RequestParam int patientId) {
     logger.info("Get request with the endpoint 'notes'");
@@ -60,6 +61,23 @@ public class NoteRestController {
     logger.info(
         "response following the GET on the endpoint 'notes'.");
     return noteList;
+  }
+
+  /**
+   * Read - Get a particular note
+   * 
+   * @param id The id of a note
+   * @return - A note
+   */
+  @CrossOrigin
+  @GetMapping("/note")
+  public Note getNote(@RequestParam String id) {
+    logger.info("Get request with the endpoint 'note'");
+    noteService.noteExist(id);
+    Note note = noteService.getNote(id);
+    logger.info(
+        "response following the GET on the endpoint 'note'.");
+    return note;
   }
 
   /**
@@ -73,17 +91,10 @@ public class NoteRestController {
   @PutMapping("/note/{id}")
   public boolean updateNote(@PathVariable("id") final String id,
       @RequestBody Note note) {
-    boolean existingNoteId = false;
     logger.info(
         "Put request of the endpoint 'note' with the id : {" + id + "}");
-    existingNoteId = noteService.noteExist(id);
-    if (existingNoteId) {
-      noteService.updateNote(id, note);
-    }
-    if (!existingNoteId) {
-      logger.error("The note with the id " + id + " doesn't exist.");
-      throw new NonexistentException("The note with the id " + id + " doesn't exist.");
-    }
+    noteService.noteExist(id);
+    noteService.updateNote(id, note);
     logger.info(
         "response following the PUT on the endpoint 'note'.");
     return true;
@@ -95,6 +106,7 @@ public class NoteRestController {
    * @param id An id
    * @return - The deleted note
    */
+  @CrossOrigin
   @DeleteMapping("/note")
   public Note deleteNote(@RequestParam String id) {
     Note note = null;

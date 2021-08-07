@@ -46,6 +46,21 @@ public class NoteRestControllerTest {
   }
 
   @Test
+  public void testGetNote() throws Exception {
+    Note note = new Note();
+    note.setPatientId(1);
+    note.setNote("Plant diet is necessary!");
+
+    when(noteServiceMock.noteExist(note.getId())).thenReturn(true);
+    when(noteServiceMock.getNote(note.getId())).thenReturn(note);
+
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/note?id=" + note.getId()))
+        .andExpect(status().isOk());
+  }
+
+  @Test
   public void testCreateNote() throws Exception {
     Note note = new Note();
     note.setPatientId(1);

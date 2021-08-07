@@ -1,6 +1,7 @@
 package com.mediscreen.service;
 
 import com.mediscreen.exceptions.IsForbiddenException;
+import com.mediscreen.exceptions.NonexistentException;
 import com.mediscreen.model.Note;
 import com.mediscreen.proxies.MicroservicePatientProxy;
 import com.mediscreen.repositories.NoteRepository;
@@ -23,6 +24,19 @@ public class NoteServiceImpl implements NoteService {
 
   @Autowired
   private MicroservicePatientProxy microservicePatientProxy;
+
+  /**
+   * Get a note from an id
+   * 
+   * @param id The id of the note
+   * @return The note
+   */
+  @Override
+  public Note getNote(String id) {
+    logger.debug("in the method getNote in the class NoteServiceImpl");
+    Optional<Note> note = noteRepository.findById(id);
+    return note.get();
+  }
 
   /**
    * Check if the patient id exists
@@ -78,6 +92,10 @@ public class NoteServiceImpl implements NoteService {
     logger.debug("in the method noteExist in the class NoteServiceImpl");
     boolean noteExist = false;
     noteExist = noteRepository.existsById(id);
+    if (!noteExist) {
+      logger.error("The note with the id " + id + " doesn't exist.");
+      throw new NonexistentException("The note with the id " + id + " doesn't exist.");
+    }
     return noteExist;
   }
 

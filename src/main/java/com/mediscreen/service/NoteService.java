@@ -31,4 +31,6 @@ public interface NoteService {
    */
   boolean filledNote(String note);
 
+  Note getNote(String id);
+
 }

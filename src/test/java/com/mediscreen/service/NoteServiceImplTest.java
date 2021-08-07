@@ -64,6 +64,18 @@ public class NoteServiceImplTest {
   }
 
   @Test
+  public void testGetNote() {
+    Optional<Note> note = Optional.ofNullable(new Note());
+    note.get().setPatientId(1);
+    note.get().setNote("Plant diet is necessary!");
+
+    when(noteRepositoryMock.findById(note.get().getId())).thenReturn(note);
+
+    Note result = noteService.getNote(note.get().getId());
+    assertThat(result).isEqualTo(note.get());
+  }
+
+  @Test
   public void testNoteExist() {
     String id = "C2I";
 
