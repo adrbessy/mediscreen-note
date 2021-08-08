@@ -5,7 +5,7 @@ import com.mediscreen.exceptions.NonexistentException;
 import com.mediscreen.model.Note;
 import com.mediscreen.proxies.MicroservicePatientProxy;
 import com.mediscreen.repositories.NoteRepository;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
@@ -49,6 +49,7 @@ public class NoteServiceImpl implements NoteService {
     logger.debug("in the method doesPatientExist in the class NoteServiceImpl");
     boolean patientExists = microservicePatientProxy.doesPatientExist(patientId);
     return patientExists;
+    // return true;
   }
 
   /**
@@ -60,10 +61,7 @@ public class NoteServiceImpl implements NoteService {
   @Override
   public Note saveNote(Note note) {
     logger.debug("in the method saveNote in the class NoteServiceImpl");
-    // TimeZone zone = TimeZone.getDefault();
-    // System.out.println(zone.getDisplayName());
-    // System.out.println(zone.getID());
-    note.setDate(new Date());
+    note.setDate(LocalDateTime.now());
     Note savedNote = noteRepository.insert(note);
     return savedNote;
   }

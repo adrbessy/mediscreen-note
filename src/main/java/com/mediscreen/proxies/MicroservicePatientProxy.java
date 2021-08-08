@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface MicroservicePatientProxy {
 
   @GetMapping("/patientExists")
-  boolean doesPatientExist(@RequestParam("id") Integer patientId);
+  boolean doesPatientExist(@RequestParam("id") Integer id);
 
 }
