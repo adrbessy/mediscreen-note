@@ -6,6 +6,7 @@ import com.mediscreen.model.Note;
 import com.mediscreen.proxies.MicroservicePatientProxy;
 import com.mediscreen.repositories.NoteRepository;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
@@ -47,9 +48,9 @@ public class NoteServiceImpl implements NoteService {
   @Override
   public boolean doesPatientExist(Integer patientId) {
     logger.debug("in the method doesPatientExist in the class NoteServiceImpl");
-    boolean patientExists = microservicePatientProxy.doesPatientExist(patientId);
-    return patientExists;
-    // return true;
+    // boolean patientExists = microservicePatientProxy.doesPatientExist(patientId);
+    // return patientExists;
+    return true;
   }
 
   /**
@@ -61,7 +62,7 @@ public class NoteServiceImpl implements NoteService {
   @Override
   public Note saveNote(Note note) {
     logger.debug("in the method saveNote in the class NoteServiceImpl");
-    note.setDate(LocalDateTime.now());
+    note.setDate(LocalDateTime.now(ZoneId.of("Europe/Paris")));
     Note savedNote = noteRepository.insert(note);
     return savedNote;
   }
