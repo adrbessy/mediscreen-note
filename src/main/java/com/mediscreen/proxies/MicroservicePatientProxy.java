@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "mediscreen-patient", url = "http://localhost:9010")
+@FeignClient(name = "mediscreen-patient", url = "${patient.url.cross}")
 public interface MicroservicePatientProxy {
 
   @GetMapping("/patientExists")

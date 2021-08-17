@@ -27,10 +27,10 @@ public class NoteServiceImpl implements NoteService {
   private MicroservicePatientProxy microservicePatientProxy;
 
   /**
-   * Get a note from an id
+   * Get a note
    * 
-   * @param id The id of the note
-   * @return The note
+   * @param id A note id
+   * @return the note
    */
   @Override
   public Note getNote(String id) {
@@ -48,9 +48,8 @@ public class NoteServiceImpl implements NoteService {
   @Override
   public boolean doesPatientExist(Integer patientId) {
     logger.debug("in the method doesPatientExist in the class NoteServiceImpl");
-    // boolean patientExists = microservicePatientProxy.doesPatientExist(patientId);
-    // return patientExists;
-    return true;
+    boolean patientExists = microservicePatientProxy.doesPatientExist(patientId);
+    return patientExists;
   }
 
   /**
@@ -137,7 +136,7 @@ public class NoteServiceImpl implements NoteService {
   /**
    * Delete a note
    * 
-   * @param note A note
+   * @param id An id
    * @return the deleted note
    */
   @Override
